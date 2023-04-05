@@ -39,7 +39,7 @@ public class DataBaseTester : ITester<IDataBase>
         
         var answer= CheckStructureEquality() &&
                     CheckTableDimensionsEquality() &&
-                    CheckColumnsDataTypeEquality();
+                    CheckDataTypeEquality();
         
         if(!answer)
             Logger.Log(testFailures);
@@ -77,60 +77,26 @@ public class DataBaseTester : ITester<IDataBase>
 
         return wrongSizedColumns.Count == 0;
     }
-    
-    private bool CheckColumnsDataTypeEquality()
+
+    private bool CheckDataTypeEquality()
     {
-        var columnsWithWrongTypeElements = new List<string>();
-        var wrongElements = new List<object?>();
+        var answer = true;
         
-        foreach (var (columnName, column) in _table.Elements)
+        for (var i = 0; i < _table.Types.Count; ++i)
         {
-            var state = _table.Types.TryGetValue(columnName, out var columnType);
+            var column = _table.Elements.Values.ToList()[i];
+            var columnType = _table.Types.Values.ToList()[i];
 
-            if (!CheckColumnDataTypeEquality(column, columnType, out var wrongElementsColumn))
+            foreach (var element in column)
             {
-                columnsWithWrongTypeElements.Add(columnName);
-                wrongElements.AddRange(wrongElementsColumn);
-            }
-        }
-
-        testFailures += "Columns with elements of wrong type: " +
-                        String.Join(", ", columnsWithWrongTypeElements) + "\n" +
-                        "Wrong elements: " + String.Join(", ", wrongElements) + "\n";
-
-        return columnsWithWrongTypeElements.Count == 0;
-    }
-    
-    private bool CheckColumnDataTypeEquality(List<object?> column, Type type, out List<object?> wrongElements)
-    {
-        wrongElements = new List<object?>();
-        
-        if (type == typeof(string))
-            return true;
-        
-        bool answer = true;
-
-        MethodInfo? castGenericMethod = null;
-        try
-        {
-            castGenericMethod = ReflectionManager.TryMakeGenericWithType(type);
-        }
-        catch (Exception)
-        {
-            testFailures += "Unknown type was met: " + type  + "\n";
-            answer = false;
-        }
-        
-        foreach (var element in column)
-        {
-            try
-            {
-                ReflectionManager.TryCastToType(type, castGenericMethod, element);
-            }
-            catch (Exception)
-            {
-                wrongElements.Add(element);
-                answer = false;
+                try
+                {
+                    Convert.ChangeType(element, columnType);
+                }
+                catch
+                {
+                    answer = false;
+                }
             }
         }
 
