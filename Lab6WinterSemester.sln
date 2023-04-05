@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab6WinterSemester", "Lab6WinterSemester\Lab6WinterSemester.csproj", "{742D69BB-D695-4112-9570-59C6D33A2B18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{BE437F98-BD43-434E-9107-56B5F4CC282E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{742D69BB-D695-4112-9570-59C6D33A2B18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{742D69BB-D695-4112-9570-59C6D33A2B18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{742D69BB-D695-4112-9570-59C6D33A2B18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{742D69BB-D695-4112-9570-59C6D33A2B18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE437F98-BD43-434E-9107-56B5F4CC282E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE437F98-BD43-434E-9107-56B5F4CC282E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE437F98-BD43-434E-9107-56B5F4CC282E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE437F98-BD43-434E-9107-56B5F4CC282E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
