@@ -1,17 +1,19 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
+using Core.Loggers;
 using Core.TableClasses;
+using Core.Testers;
 using Microsoft.Win32;
 
 namespace Lab6WinterSemester.Models;
 
-public class MainModel : IMainModel
+public class MainModel
 {
-    public ObservableCollection<DataBase> DataBases { get; set; }
+    public ObservableCollection<ReflectionDataBase> DataBases { get; set; }
 
     public MainModel()
     {
-        DataBases = new ObservableCollection<DataBase>();
+        DataBases = new ObservableCollection<ReflectionDataBase>();
     }
 
     public bool AddDataBase()
@@ -35,9 +37,13 @@ public class MainModel : IMainModel
         return null;
     }
     
-    private DataBase CreateDataBase(FileInfo dataBaseSchemaFile)
+    private ReflectionDataBase CreateDataBase(FileInfo dataBaseFile)
     {
-        DataBaseSimpleFactory factory = new DataBaseSimpleFactory();
-        return factory.CreateDataBase(dataBaseSchemaFile);
+        var tableFactory = new TableFactory();
+        var databaseFactory = new DataBaseFactory(tableFactory);
+        var fileTester = new FileTester(Logger.GetInstance());
+
+        fileTester.Test(dataBaseFile, out var schemaFile);
+        return databaseFactory.CreateInstance(schemaFile);
     }
 }

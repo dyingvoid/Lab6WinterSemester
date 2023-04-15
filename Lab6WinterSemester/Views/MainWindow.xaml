@@ -23,15 +23,15 @@
                 <ColumnDefinition Width="20*"/>
             </Grid.ColumnDefinitions>
             <TreeView x:Name="Explorer" Grid.Column="0" ItemsSource="{Binding Path=DataBases}"
-                      SelectedItemChanged="ConvertTableToDataView">
+                      SelectedItemChanged="UpdateDataGrid">
                 <TreeView.Resources>
-                    <HierarchicalDataTemplate DataType="{x:Type tableClasses:DataBase}" 
+                    <HierarchicalDataTemplate DataType="{x:Type tableClasses:ReflectionDataBase}" 
                                               ItemsSource="{Binding Tables}">
                        <StackPanel>
-                           <TextBlock Text="{Binding Path=SchemaFileName}"/>
+                           <TextBlock Text="{Binding Path=File.DataBaseFile.Name}"/>
                        </StackPanel>
                    </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type tableClasses:Table}">
+                    <HierarchicalDataTemplate DataType="{x:Type tableClasses:ReflectionTable}">
                         <StackPanel>
                             <TextBlock Text="{Binding Path=Name}"></TextBlock>
                         </StackPanel>
@@ -53,8 +53,8 @@
                 </StackPanel>
             </ScrollViewer>
             <DataGrid x:Name="Data" Grid.Column="2" 
-                      ItemsSource="{Binding ElementName=Window, Path=DataView}"
+                      ItemsSource="{Binding ElementName=Explorer, Path=SelectedItem}"
                       AutoGenerateColumns="True"/>
-            </Grid>
         </Grid>
+    </Grid>
 </Window>

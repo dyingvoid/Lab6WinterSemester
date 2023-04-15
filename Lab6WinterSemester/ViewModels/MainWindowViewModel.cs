@@ -1,13 +1,14 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using Core.TableClasses;
 using Lab6WinterSemester.Models;
 
 namespace Lab6WinterSemester.ViewModels;
 
-public class MainWindowViewModel : IMainWindowViewModel
+public class MainWindowViewModel
 {
-    private readonly IMainModel _model;
+    private readonly MainModel _model;
     private ICommand _addDataBaseCommand;
 
     public ICommand AddDataBaseCommand
@@ -25,14 +26,14 @@ public class MainWindowViewModel : IMainWindowViewModel
         }
     }
 
-    public MainWindowViewModel(IMainModel model)
+    public MainWindowViewModel(MainModel model)
     {
         _model = model;
         DataBases = _model.DataBases;
     }
 
-    public ObservableCollection<DataBase> DataBases { get; set; }
-
+    public ObservableCollection<ReflectionDataBase> DataBases { get; set; }
+    
     private void AddDataBase()
     {
         _model.AddDataBase();

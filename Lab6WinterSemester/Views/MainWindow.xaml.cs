@@ -1,5 +1,9 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Security.Permissions;
 using System.Windows;
+using System.Windows.Controls;
 using Core.TableClasses;
 using Lab6WinterSemester.Models;
 using Lab6WinterSemester.ViewModels;
@@ -15,9 +19,11 @@ namespace Lab6WinterSemester.Views
         {
             InitializeComponent();
 
-            IMainModel mainModel = new MainModel();
+            MainModel mainModel = new MainModel();
             DataContext = new MainWindowViewModel(mainModel);
         }
+
+        private string num { get; set; }
         
         public static readonly DependencyProperty DataViewProperty = DependencyProperty.Register(
             nameof(DataView),
@@ -31,33 +37,15 @@ namespace Lab6WinterSemester.Views
             set => SetValue(DataViewProperty, value);
         }
 
-        private void ConvertTableToDataView(object sender, RoutedEventArgs e)
+        private void UpdateDataGrid(object sender, RoutedEventArgs e)
         {
-            var dataTable = new DataTable();
-            
-            var table = Explorer.SelectedItem as ITable;
-            if (table == null) return;
-
-            foreach (var (key, value) in table.Elements)
+            try
             {
-                dataTable.Columns.Add(key, typeof(object));
+                Data.ItemsSource = ((ReflectionTable)Explorer.SelectedItem).Data;
             }
-
-            for (var i = 0; i < table.Shape.Item2; i++)
+            catch
             {
-                var row = dataTable.NewRow();
-
-                var counter = 0;
-                foreach (var (columnName, column) in table.Elements)
-                {
-                    row[counter] = column[i];
-                    counter++;
-                }
-
-                dataTable.Rows.Add(row);
             }
-
-            DataView = dataTable.DefaultView;
         }
     }
 }
