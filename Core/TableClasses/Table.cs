@@ -1,8 +1,8 @@
 ﻿namespace Core.TableClasses;
 
-public class ReflectionTable
+public class Table
 {
-    public ReflectionTable(FileInfo file, Dictionary<string, Type> metadata, List<object> data, Type type)
+    public Table(FileInfo file, Dictionary<string, Type> metadata, List<object> data, Type type)
     {
         File = file;
         Metadata = metadata;

@@ -29,7 +29,7 @@ public static class FileManager
         return fileData;
     }
 
-    public static void Save(this ReflectionDataBase dataBase)
+    public static void Save(this DataBase dataBase)
     {
         foreach (var table in dataBase.Tables)
         {
@@ -37,7 +37,7 @@ public static class FileManager
         }
     }
 
-    private static void SaveTable(ReflectionTable table)
+    private static void SaveTable(Table table)
     {
         var data = new List<string>();
         using var writer = new StreamWriter(table.File.FullName);

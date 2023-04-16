@@ -47,5 +47,5 @@ public class MainWindowViewModel
         DataBases = _model.DataBases;
     }
 
-    public ObservableCollection<ReflectionDataBase> DataBases { get; set; }
+    public ObservableCollection<DataBase> DataBases { get; set; }
 }

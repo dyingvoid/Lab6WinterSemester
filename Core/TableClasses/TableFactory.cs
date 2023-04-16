@@ -5,9 +5,9 @@ namespace Core.TableClasses;
 
 public class TableFactory
 {
-    public List<ReflectionTable> BuildTables(Dictionary<FileInfo, Dictionary<string, Type>> tableConfig)
+    public List<Table> BuildTables(Dictionary<FileInfo, Dictionary<string, Type>> tableConfig)
     {
-        var tables = new List<ReflectionTable>();
+        var tables = new List<Table>();
 
         var counter = 0;
         foreach (var (tableFile, tableMetadata) in tableConfig)
@@ -20,7 +20,7 @@ public class TableFactory
         return tables;
     }
 
-    private ReflectionTable BuildTable(FileInfo tableFile, 
+    private Table BuildTable(FileInfo tableFile, 
         Dictionary<string, Type> tableMetadata, 
         ReflectionBuilder builder)
     {
@@ -32,6 +32,6 @@ public class TableFactory
             preparedData.Add(builder.CreateInstance(elementArray.ToArray()));
         }
 
-        return new ReflectionTable(tableFile, tableMetadata, preparedData, builder.BuildedType);
+        return new Table(tableFile, tableMetadata, preparedData, builder.BuildedType);
     }
 }

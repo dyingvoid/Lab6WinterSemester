@@ -12,12 +12,12 @@ public class MainModel
 {
     public MainModel()
     {
-        DataBases = new ObservableCollection<ReflectionDataBase>();
+        DataBases = new ObservableCollection<DataBase>();
         DbFactory = new DataBaseFactory(new TableFactory());
         Tester = new FileTester(Logger.GetInstance());
     }
     
-    public ObservableCollection<ReflectionDataBase> DataBases { get; set; }
+    public ObservableCollection<DataBase> DataBases { get; set; }
     public DataBaseFactory DbFactory { get; set; }
     public FileTester Tester { get; set; }
 
@@ -47,7 +47,7 @@ public class MainModel
         return null;
     }
     
-    private ReflectionDataBase? CreateDataBase(FileInfo dataBaseFile)
+    private DataBase? CreateDataBase(FileInfo dataBaseFile)
     {
         Tester.Test(dataBaseFile, out var schemaFile);
         

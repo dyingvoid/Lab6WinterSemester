@@ -26,13 +26,13 @@
             <TreeView x:Name="Explorer" Grid.Column="0" ItemsSource="{Binding Path=DataBases}"
                       SelectedItemChanged="UpdateDataGrid">
                 <TreeView.Resources>
-                    <HierarchicalDataTemplate DataType="{x:Type tableClasses:ReflectionDataBase}" 
+                    <HierarchicalDataTemplate DataType="{x:Type tableClasses:DataBase}" 
                                               ItemsSource="{Binding Tables}">
                        <StackPanel>
                            <TextBlock Text="{Binding Path=File.DataBaseFile.Name}"/>
                        </StackPanel>
                    </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type tableClasses:ReflectionTable}">
+                    <HierarchicalDataTemplate DataType="{x:Type tableClasses:Table}">
                         <StackPanel>
                             <TextBlock Text="{Binding Path=Name}"></TextBlock>
                         </StackPanel>

@@ -9,9 +9,9 @@ public class DataBaseFactory
         _tableFactory = tableFactory;
     }
 
-    public ReflectionDataBase CreateInstance(SchemaFile dataBaseConfig)
+    public DataBase CreateInstance(SchemaFile dataBaseConfig)
     {
         var tables = _tableFactory.BuildTables(dataBaseConfig.TablesDescription);
-        return new ReflectionDataBase(dataBaseConfig, tables);
+        return new DataBase(dataBaseConfig, tables);
     }
 }

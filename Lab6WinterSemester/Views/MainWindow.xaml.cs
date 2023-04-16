@@ -19,10 +19,10 @@ public partial class MainWindow : Window
     
     private void UpdateDataGrid(object sender, RoutedEventArgs e)
     {
-        if(Explorer.SelectedItem is ReflectionTable)
-            Data.ItemsSource = ((ReflectionTable)Explorer.SelectedItem).Data;
+        if(Explorer.SelectedItem is Table)
+            Data.ItemsSource = ((Table)Explorer.SelectedItem).Data;
         else
-            Data.ItemsSource = ((ReflectionDataBase)Explorer.SelectedItem).Tables;
+            Data.ItemsSource = ((DataBase)Explorer.SelectedItem).Tables;
         
     }
 
