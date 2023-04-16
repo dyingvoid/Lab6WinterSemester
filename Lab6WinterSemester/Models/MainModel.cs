@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
 using Core.Loggers;
+using Core.Managers;
 using Core.TableClasses;
 using Core.Testers;
 using Microsoft.Win32;
@@ -9,12 +10,16 @@ namespace Lab6WinterSemester.Models;
 
 public class MainModel
 {
-    public ObservableCollection<ReflectionDataBase> DataBases { get; set; }
-
     public MainModel()
     {
         DataBases = new ObservableCollection<ReflectionDataBase>();
+        DbFactory = new DataBaseFactory(new TableFactory());
+        Tester = new FileTester(Logger.GetInstance());
     }
+    
+    public ObservableCollection<ReflectionDataBase> DataBases { get; set; }
+    public DataBaseFactory DbFactory { get; set; }
+    public FileTester Tester { get; set; }
 
     public bool AddDataBase()
     {
@@ -22,7 +27,12 @@ public class MainModel
         if (file == null) 
             return false;
 
-        DataBases.Add(CreateDataBase(file));
+        var database = CreateDataBase(file);
+        
+        if (database is null)
+            return false;
+        
+        DataBases.Add(database);
         return true;
     }
 
@@ -37,13 +47,21 @@ public class MainModel
         return null;
     }
     
-    private ReflectionDataBase CreateDataBase(FileInfo dataBaseFile)
+    private ReflectionDataBase? CreateDataBase(FileInfo dataBaseFile)
     {
-        var tableFactory = new TableFactory();
-        var databaseFactory = new DataBaseFactory(tableFactory);
-        var fileTester = new FileTester(Logger.GetInstance());
+        Tester.Test(dataBaseFile, out var schemaFile);
+        
+        if(schemaFile is not null)
+            return DbFactory.CreateInstance(schemaFile);
 
-        fileTester.Test(dataBaseFile, out var schemaFile);
-        return databaseFactory.CreateInstance(schemaFile);
+        return null;
+    }
+
+    public void Save()
+    {
+        foreach (var database in DataBases)
+        {
+            FileManager.Save(database);
+        }
     }
 }

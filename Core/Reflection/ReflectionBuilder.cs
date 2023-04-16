@@ -92,4 +92,18 @@ public class ReflectionBuilder
         propertyBuilder.SetGetMethod(getMethodBuilder);
         propertyBuilder.SetSetMethod(setMethodBuilder);
     }
+
+    public static List<object> GetProperties(object element)
+    {
+        var elementType = element.GetType();
+        var properties = elementType.GetProperties();
+        var objectProperties = new List<object>();
+
+        foreach (var property in properties)
+        {
+            objectProperties.Add(property.GetValue(element, null));
+        }
+
+        return objectProperties;
+    }
 }

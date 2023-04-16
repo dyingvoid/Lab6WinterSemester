@@ -12,10 +12,11 @@
             <RowDefinition Height="2*"/>
             <RowDefinition Height="35*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" x:Name="MenuBarGrid">
-            <Button Grid.Row="0" x:Name="BtnDbOpen" Command="{Binding AddDataBaseCommand}"
+        <StackPanel Grid.Row="0" x:Name="MenuBar" Orientation="Horizontal" Background="Silver" >
+            <Button x:Name="BtnDbOpen" Command="{Binding AddDataBaseCommand}"
                     Content="Open data base(.json)"/>
-        </Grid >
+            <Button x:Name="BtnSave" Content="Save" Command="{Binding SaveCommand}"/>
+        </StackPanel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="8*"/>
@@ -52,8 +53,7 @@
                     <DataGrid ItemsSource="{Binding ElementName=Explorer, Path=SelectedItem.Types}"/>
                 </StackPanel>
             </ScrollViewer>
-            <DataGrid x:Name="Data" Grid.Column="2" 
-                      ItemsSource="{Binding ElementName=Explorer, Path=SelectedItem}"
+            <DataGrid x:Name="Data" Grid.Column="2"
                       AutoGenerateColumns="True"/>
         </Grid>
     </Grid>

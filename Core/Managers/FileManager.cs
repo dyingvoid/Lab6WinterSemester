@@ -1,4 +1,7 @@
-﻿namespace Core.Managers;
+﻿using Core.Reflection;
+using Core.TableClasses;
+
+namespace Core.Managers;
 
 public static class FileManager
 {
@@ -24,5 +27,27 @@ public static class FileManager
         }
 
         return fileData;
+    }
+
+    public static void Save(this ReflectionDataBase dataBase)
+    {
+        foreach (var table in dataBase.Tables)
+        {
+            SaveTable(table);
+        }
+    }
+
+    private static void SaveTable(ReflectionTable table)
+    {
+        var data = new List<string>();
+        using var writer = new StreamWriter(table.File.FullName);
+        
+        foreach (var element in table.Data)
+        {
+            var properties = from property in ReflectionBuilder.GetProperties(element)
+                select property.ToString();
+
+            writer.WriteLine(String.Join(",", properties));
+        }
     }
 }

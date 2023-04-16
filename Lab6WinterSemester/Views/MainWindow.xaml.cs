@@ -1,50 +1,46 @@
-﻿using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Security.Permissions;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using Core.TableClasses;
 using Lab6WinterSemester.Models;
 using Lab6WinterSemester.ViewModels;
 
-namespace Lab6WinterSemester.Views
+namespace Lab6WinterSemester.Views;
+
+public partial class MainWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            MainModel mainModel = new MainModel();
-            DataContext = new MainWindowViewModel(mainModel);
-        }
-
-        private string num { get; set; }
+        MainModel mainModel = new MainModel();
+        DataContext = new MainWindowViewModel(mainModel);
+    }
+    
+    private void UpdateDataGrid(object sender, RoutedEventArgs e)
+    {
+        if(Explorer.SelectedItem is ReflectionTable)
+            Data.ItemsSource = ((ReflectionTable)Explorer.SelectedItem).Data;
+        else
+            Data.ItemsSource = ((ReflectionDataBase)Explorer.SelectedItem).Tables;
         
-        public static readonly DependencyProperty DataViewProperty = DependencyProperty.Register(
-            nameof(DataView),
-            typeof(DataView),
-            typeof(MainWindow)
-            );
-        
-        public DataView DataView
-        {
-            get => (DataView)GetValue(DataViewProperty);
-            set => SetValue(DataViewProperty, value);
-        }
+    }
 
-        private void UpdateDataGrid(object sender, RoutedEventArgs e)
+    private void Data_OnCellEditEnding(object? sender, DataGridCellEditEndingEventArgs e)
+    {
+        if (e.EditAction == DataGridEditAction.Commit)
         {
-            try
+            var column = e.Column as DataGridBoundColumn;
+            if (column != null)
             {
-                Data.ItemsSource = ((ReflectionTable)Explorer.SelectedItem).Data;
-            }
-            catch
-            {
+                var bindingPath = (column.Binding as Binding).Path.Path;
+                
+                int rowIndex = e.Row.GetIndex();
+                var el = e.EditingElement as TextBox;
+                // rowIndex has the row index
+                // bindingPath has the column's binding
+                // el.Text has the new, user-entered value
+                
             }
         }
     }

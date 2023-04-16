@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using Core.TableClasses;
 using Lab6WinterSemester.Models;
@@ -10,6 +9,7 @@ public class MainWindowViewModel
 {
     private readonly MainModel _model;
     private ICommand _addDataBaseCommand;
+    private ICommand _saveCommand;
 
     public ICommand AddDataBaseCommand
     {
@@ -18,11 +18,26 @@ public class MainWindowViewModel
             if (_addDataBaseCommand == null)
             {
                 _addDataBaseCommand = new RelayCommand(
-                    param => AddDataBase(),
+                    param => _model.AddDataBase(),
                     param => true
                     );
             }
             return _addDataBaseCommand;
+        }
+    }
+
+    public ICommand SaveCommand
+    {
+        get
+        {
+            if (_saveCommand == null)
+            {
+                _saveCommand= new RelayCommand(
+                    param => _model.Save(),
+                    param => true
+                );
+            }
+            return _saveCommand;
         }
     }
 
@@ -33,9 +48,4 @@ public class MainWindowViewModel
     }
 
     public ObservableCollection<ReflectionDataBase> DataBases { get; set; }
-    
-    private void AddDataBase()
-    {
-        _model.AddDataBase();
-    }
 }
