@@ -42,7 +42,7 @@
             <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto">
                 <StackPanel>
                     <TextBlock Text="DataFile: ">
-                        <TextBlock Text="{Binding ElementName=Explorer, Path=SelectedItem.DataFile}"/>
+                        <TextBlock Text="{Binding ElementName=Explorer, Path=SelectedItem.File}"/>
                     </TextBlock>
                     <TextBlock Text="Name: ">
                         <TextBlock Text="{Binding ElementName=Explorer, Path=SelectedItem.Name}"></TextBlock>
@@ -50,11 +50,11 @@
                     <TextBlock Text="Shape: ">
                         <TextBlock Text="{Binding ElementName=Explorer, Path=SelectedItem.Shape}"></TextBlock>
                     </TextBlock>
-                    <DataGrid ItemsSource="{Binding ElementName=Explorer, Path=SelectedItem.Types}"/>
+                    <DataGrid x:Name="Description" ItemsSource="{Binding ElementName=Explorer, 
+                    Path=SelectedItem.ElementsType}" AutoGenerateColumns="False"/>
                 </StackPanel>
             </ScrollViewer>
-            <DataGrid x:Name="Data" Grid.Column="2"
-                      AutoGenerateColumns="True"/>
+            <DataGrid x:Name="Data" Grid.Column="2" AutoGenerateColumns="True"/>
         </Grid>
     </Grid>
 </Window>

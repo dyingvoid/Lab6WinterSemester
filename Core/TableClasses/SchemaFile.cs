@@ -24,5 +24,5 @@ public class SchemaFile
         }
     }
 
-    public Dictionary<FileInfo, Dictionary<string, Type>> TablesDescription { get; }
+    public Dictionary<FileInfo, Dictionary<string, Type>> TablesDescription { get; set; }
 }

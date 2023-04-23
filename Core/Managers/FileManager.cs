@@ -1,4 +1,5 @@
-﻿using Core.Reflection;
+﻿using System.Text.Json;
+using Core.Reflection;
 using Core.TableClasses;
 
 namespace Core.Managers;
@@ -35,6 +36,7 @@ public static class FileManager
         {
             SaveTable(table);
         }
+        SaveConfig(dataBase);
     }
 
     private static void SaveTable(Table table)
@@ -49,5 +51,32 @@ public static class FileManager
 
             writer.WriteLine(String.Join(",", properties));
         }
+    }
+
+    private static void SaveConfig(DataBase database)
+    {
+        var description = MakeStringConfig(database);
+        var strConfig = JsonSerializer.Serialize(description);
+
+        using var writer = new StreamWriter(database.File.DataBaseFile.FullName);
+        writer.WriteLine(strConfig);
+    }
+
+    private static Dictionary<string, Dictionary<string, string>> MakeStringConfig(DataBase database)
+    {
+        var description = new Dictionary<string, Dictionary<string, string>>();
+
+        foreach (var table in database.Tables)
+        {
+            var strMetaData = new Dictionary<string, string>();
+
+            foreach (var (name, type) in table.Metadata)
+            {
+                strMetaData.Add(name, type.FullName);
+            }
+            description.Add(table.File.FullName, strMetaData);
+        }
+
+        return description;
     }
 }
