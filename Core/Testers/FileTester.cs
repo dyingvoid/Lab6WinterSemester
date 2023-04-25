@@ -17,14 +17,20 @@ public class FileTester
     public bool Test(FileInfo dataBaseFile, out SchemaFile? databaseDescription)
     {
         databaseDescription = null;
-        
+
         if (!dataBaseFile.Exists)
+        {
+            _logger.Log("Db file does not exist.");
             return false;
+        }
 
         var untestedConfig = ReadDataBaseFile(dataBaseFile);
         if (untestedConfig is null)
+        {
+            _logger.Log("Db file is invalid");
             return false;
-        
+        }
+
         var answer = TestConfig(untestedConfig,
             out var dataBaseConfig);
 
@@ -64,6 +70,10 @@ public class FileTester
                      dataBaseConfig.TryAdd(file, metaData);
         }
 
+        if (!answer)
+        {
+            _logger.Log("Problems with config.");
+        }
         return answer;
     }
 
@@ -83,6 +93,10 @@ public class FileTester
                      metaData.TryAdd(columnName, type);
         }
 
+        if (!answer)
+        {
+            _logger.Log("Problems with table metadata.");
+        }
         return answer;
     }
     
@@ -126,10 +140,15 @@ public class FileTester
             {
                 try
                 {
-                    var smt = Convert.ChangeType(fileData[j][i], types[i]);
+                    var obj = fileData[j][i];
+                    if(obj.Length > 0)
+                    {
+                        Convert.ChangeType(fileData[j][i], types[i]);
+                    }
                 }
                 catch
                 {
+                    _logger.Log($"{fileData[j][i]} couldn't be converted to {types[i].FullName}");
                     return false;
                 }
             }

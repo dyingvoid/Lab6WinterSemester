@@ -10,6 +10,7 @@ public class MainWindowViewModel
     private readonly MainModel _model;
     private ICommand _addDataBaseCommand;
     private ICommand _saveCommand;
+    private ICommand _createTableCommand;
 
     public ICommand AddDataBaseCommand
     {
@@ -32,12 +33,28 @@ public class MainWindowViewModel
         {
             if (_saveCommand == null)
             {
-                _saveCommand= new RelayCommand(
+                _saveCommand = new RelayCommand(
                     param => _model.Save(),
                     param => true
                 );
             }
             return _saveCommand;
+        }
+    }
+
+    public ICommand CreateTableCommand
+    {
+        get
+        {
+            if (_createTableCommand == null)
+            {
+                _createTableCommand = new RelayCommand(
+                    param => _model.CreateTable(),
+                    param => true
+                    );
+            }
+
+            return _createTableCommand;
         }
     }
 

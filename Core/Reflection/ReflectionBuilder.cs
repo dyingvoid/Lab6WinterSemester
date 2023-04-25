@@ -25,6 +25,10 @@ public class ReflectionBuilder
         var counter = 0;
         foreach (var (propertyName, type) in TypeDescription)
         {
+            if (properties[counter].ToString().Length == 0 && type.FullName is not "System.String")
+            {
+                properties[counter] = Activator.CreateInstance(type);
+            }
             BuildedType.GetProperty(propertyName)
                 .SetValue(instance, Convert.ChangeType(properties[counter], type));
             counter++;

@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Data.Common;
+using System.Text.Json;
 using Core.Reflection;
 using Core.TableClasses;
 
@@ -32,11 +33,11 @@ public static class FileManager
 
     public static void Save(this DataBase dataBase)
     {
+        SaveConfig(dataBase);
         foreach (var table in dataBase.Tables)
         {
             SaveTable(table);
         }
-        SaveConfig(dataBase);
     }
 
     private static void SaveTable(Table table)
@@ -49,9 +50,38 @@ public static class FileManager
             var properties = from property in ReflectionBuilder.GetProperties(element)
                 select property.ToString();
 
-            writer.WriteLine(String.Join(",", properties));
+            ManageColumnCsv(properties, table, writer);
         }
     }
+
+    private static void ManageColumnCsv(IEnumerable<string> properties, Table table, StreamWriter writer)
+    {
+        var strProperties = String.Join(",", properties);
+        var numberOfColumns = strProperties.Count(c => c == ',') + 1;
+
+        if (numberOfColumns <= table.CountNotNullProperties())
+        {
+            writer.Write(strProperties);
+            
+            for (var i = 0; i < table.CountNotNullProperties() - numberOfColumns ; i++)
+            {
+                writer.Write(',');
+            }
+            
+            writer.WriteLine();
+        }
+        else
+        {
+            var listProps = properties.ToList();
+            for (var i = 0; i < numberOfColumns - table.CountNotNullProperties(); i++)
+            {
+                listProps.RemoveAt(listProps.Count - 1);
+            }
+
+            writer.WriteLine(String.Join(",", listProps));
+        }
+    }
+
 
     private static void SaveConfig(DataBase database)
     {
@@ -70,9 +100,10 @@ public static class FileManager
         {
             var strMetaData = new Dictionary<string, string>();
 
-            foreach (var (name, type) in table.Metadata)
+            foreach (var property in table.Properties)
             {
-                strMetaData.Add(name, type.FullName);
+                if(!property.IsNullOrEmpty())
+                    strMetaData.Add(property.Name, property.TypeName);
             }
             description.Add(table.File.FullName, strMetaData);
         }

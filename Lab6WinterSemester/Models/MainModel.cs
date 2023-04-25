@@ -1,9 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Windows;
 using Core.Loggers;
 using Core.Managers;
 using Core.TableClasses;
 using Core.Testers;
+using Lab6WinterSemester.Views;
 using Microsoft.Win32;
 
 namespace Lab6WinterSemester.Models;
@@ -36,6 +39,18 @@ public class MainModel
         return true;
     }
 
+    public void ReOpenDataBases(List<FileInfo> databaseFiles)
+    {
+        foreach (var file in databaseFiles)
+        {
+            var database = CreateDataBase(file);
+            if (database is null)
+                continue;
+        
+            DataBases.Add(database);
+        }
+    }
+
     private FileInfo? OpenDataBaseFile()
     {
         var fileDialog = new OpenFileDialog();
@@ -50,6 +65,11 @@ public class MainModel
     private DataBase? CreateDataBase(FileInfo dataBaseFile)
     {
         Tester.Test(dataBaseFile, out var schemaFile);
+
+        foreach (var message in Logger.messages)
+        {
+            MessageBox.Show(message);
+        }
         
         if(schemaFile is not null)
             return DbFactory.CreateInstance(schemaFile);
@@ -63,5 +83,21 @@ public class MainModel
         {
             FileManager.Save(database);
         }
+
+        var databaseFiles = new List<FileInfo>();
+        foreach (var database in DataBases)
+        {
+            databaseFiles.Add(database.File.DataBaseFile);
+        }
+        
+        DataBases.Clear();
+        ReOpenDataBases(databaseFiles);
+    }
+
+    public void CreateTable()
+    {
+        var properties = new List<TableProperty>();
+        var createTableWindow = new NewTable(properties);
+        createTableWindow.Show();
     }
 }

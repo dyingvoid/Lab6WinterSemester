@@ -16,6 +16,7 @@
             <Button x:Name="BtnDbOpen" Command="{Binding AddDataBaseCommand}"
                     Content="Open data base(.json)"/>
             <Button x:Name="BtnSave" Content="Save" Command="{Binding SaveCommand}"/>
+            <Button x:Name="BtnNewTable" Content="Create Table" Command="{Binding CreateTableCommand}"/>
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -42,16 +43,13 @@
             <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto">
                 <StackPanel>
                     <TextBlock Text="DataFile: ">
-                        <TextBlock Text="{Binding ElementName=Explorer, Path=SelectedItem.File}"/>
-                    </TextBlock>
-                    <TextBlock Text="Name: ">
-                        <TextBlock Text="{Binding ElementName=Explorer, Path=SelectedItem.Name}"></TextBlock>
+                        <TextBox Text="{Binding ElementName=Explorer, Path=SelectedItem.Name}"/>
                     </TextBlock>
                     <TextBlock Text="Shape: ">
                         <TextBlock Text="{Binding ElementName=Explorer, Path=SelectedItem.Shape}"></TextBlock>
                     </TextBlock>
                     <DataGrid x:Name="Description" ItemsSource="{Binding ElementName=Explorer, 
-                    Path=SelectedItem.ElementsType}" AutoGenerateColumns="False"/>
+                    Path=SelectedItem.Properties}" AutoGenerateColumns="True"/>
                 </StackPanel>
             </ScrollViewer>
             <DataGrid x:Name="Data" Grid.Column="2" AutoGenerateColumns="True"/>

@@ -3,6 +3,7 @@
 public class Logger : ILogger
 {
     private static Logger _instance = new Logger();
+    public static List<string> messages = new List<string>();
     
     private Logger()
     {
@@ -15,6 +16,6 @@ public class Logger : ILogger
 
     public void Log(string message)
     {
-        //var result = MessageBox.Show(message);
+        messages.Add(message);
     }
 }

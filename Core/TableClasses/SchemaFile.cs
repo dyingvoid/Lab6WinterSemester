@@ -8,7 +8,7 @@ public class SchemaFile
         TablesDescription = tablesDescription;
     }
 
-    public FileInfo DataBaseFile { get; }
+    public FileInfo DataBaseFile { get; set; }
 
     public Dictionary<FileInfo, string> TablesPathsTypes
     {

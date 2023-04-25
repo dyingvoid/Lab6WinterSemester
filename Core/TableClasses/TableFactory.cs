@@ -20,18 +20,31 @@ public class TableFactory
         return tables;
     }
 
-    private Table BuildTable(FileInfo tableFile, 
+    public Table BuildTable(FileInfo tableFile, 
         Dictionary<string, Type> tableMetadata, 
         ReflectionBuilder builder)
     {
         var preparedData = new List<object>();
         var tableData = tableFile.ReadFileData<object>();
+        var properties = MakeProperties(tableMetadata);
 
         foreach (var elementArray in tableData)
         {
             preparedData.Add(builder.CreateInstance(elementArray.ToArray()));
         }
 
-        return new Table(tableFile, tableMetadata, preparedData, builder.BuildedType);
+        return new Table(tableFile, tableMetadata, preparedData, builder.BuildedType, properties);
+    }
+
+    private List<TableProperty> MakeProperties(Dictionary<string, Type> tableConfig)
+    {
+        var properties = new List<TableProperty>();
+
+        foreach (var (name, type) in tableConfig)
+        {
+            properties.Add(new TableProperty { Name = name, TypeName = type.FullName });
+        }
+
+        return properties;
     }
 }

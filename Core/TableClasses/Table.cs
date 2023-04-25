@@ -2,12 +2,14 @@
 
 public class Table
 {
-    public Table(FileInfo file, Dictionary<string, Type> metadata, List<object> data, Type type)
+    public Table(FileInfo file, Dictionary<string, Type> metadata, List<object> data, Type type, 
+        List<TableProperty> properties)
     {
         File = file;
         Metadata = metadata;
         ElementsType = type;
         Data = data;
+        Properties = properties;
     }
 
     public string Name
@@ -24,7 +26,12 @@ public class Table
     public FileInfo File { get; private set; }
     public Dictionary<string, Type> Metadata { get; }
     public Tuple<int, int> Shape => Tuple.Create(ElementsType.GetProperties().Length, Data.Count);
-    public List<string> Names { get; }
     public Type ElementsType { get; }
     public List<object> Data { get; set; }
+    public List<TableProperty> Properties { get; set; }   
+
+    public int CountNotNullProperties()
+    {
+        return Properties.Count(property => !property.IsNullOrEmpty());
+    }
 }
