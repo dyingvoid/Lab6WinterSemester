@@ -115,7 +115,8 @@ public class FileTester
             var strArrLength = fileData[i].Split(",").Length;
             if (length != strArrLength)
             {
-                _logger.Log($"File {tableFile.Name} with wrong dimensions. Found {i+1} row of size {strArrLength}, " +
+                _logger.Log($"File {tableFile.Name} with wrong dimensions. " +
+                            $"Found {i+1} row of size {strArrLength}, " +
                             $"whereas 1st row of size {length}.\n");
                 
                 return false;

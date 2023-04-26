@@ -6,7 +6,13 @@
         xmlns:local="clr-namespace:Lab6WinterSemester.Views"
         mc:Ignorable="d"
         Title="NewTable" Height="450" Width="800">
-    <Grid>
-        <DataGrid x:Name="GridNewTable" AutoGenerateColumns="True" ItemsSource="{Binding }"/>
-    </Grid>
+    <StackPanel>
+        <Button x:Name="BtnAdd" Content="Add Table" Click="BtnAdd_OnClick"/>
+        <ListView x:Name="DataBases"/>
+        <TextBlock Text="Name of table: ">
+            <TextBox x:Name="TableName"/>
+        </TextBlock>
+        <DataGrid x:Name="GridNewTable" AutoGenerateColumns="True" 
+                  ItemsSource="{Binding Path=NewTable.Properties}"/>
+    </StackPanel>
 </Window>

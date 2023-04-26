@@ -96,8 +96,7 @@ public class MainModel
 
     public void CreateTable()
     {
-        var properties = new List<TableProperty>();
-        var createTableWindow = new NewTable(properties);
+        var createTableWindow = new NewTable(DataBases);
         createTableWindow.Show();
     }
 }

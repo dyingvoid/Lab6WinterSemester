@@ -6,7 +6,6 @@ public class Table
         List<TableProperty> properties)
     {
         File = file;
-        Metadata = metadata;
         ElementsType = type;
         Data = data;
         Properties = properties;
@@ -24,7 +23,6 @@ public class Table
     }
 
     public FileInfo File { get; private set; }
-    public Dictionary<string, Type> Metadata { get; }
     public Tuple<int, int> Shape => Tuple.Create(ElementsType.GetProperties().Length, Data.Count);
     public Type ElementsType { get; }
     public List<object> Data { get; set; }

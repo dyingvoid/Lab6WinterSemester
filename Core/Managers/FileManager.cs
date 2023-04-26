@@ -103,7 +103,7 @@ public static class FileManager
             foreach (var property in table.Properties)
             {
                 if(!property.IsNullOrEmpty())
-                    strMetaData.Add(property.Name, property.TypeName);
+                    strMetaData.Add(property.Name, "System." + property.PrType);
             }
             description.Add(table.File.FullName, strMetaData);
         }

@@ -1,4 +1,5 @@
-﻿using Core.Managers;
+﻿using System.Collections;
+using Core.Managers;
 using Core.Reflection;
 
 namespace Core.TableClasses;
@@ -8,13 +9,11 @@ public class TableFactory
     public List<Table> BuildTables(Dictionary<FileInfo, Dictionary<string, Type>> tableConfig)
     {
         var tables = new List<Table>();
-
-        var counter = 0;
+        
         foreach (var (tableFile, tableMetadata) in tableConfig)
         {
             var builder = new ReflectionBuilder(tableFile.Name, tableMetadata);
             tables.Add(BuildTable(tableFile, tableMetadata, builder));
-            counter++;
         }
 
         return tables;
@@ -42,7 +41,10 @@ public class TableFactory
 
         foreach (var (name, type) in tableConfig)
         {
-            properties.Add(new TableProperty { Name = name, TypeName = type.FullName });
+            var property = new TableProperty();
+            property.Set(name, type.Name);
+            
+            properties.Add(property);
         }
 
         return properties;

@@ -20,4 +20,9 @@ public class DataBase
             File.DataBaseFile = new FileInfo(destination);
         }
     }
+
+    public override string ToString()
+    {
+        return File.DataBaseFile.Name;
+    }
 }
