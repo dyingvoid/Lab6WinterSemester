@@ -18,6 +18,8 @@
             <Button x:Name="BtnSave" Content="Save" Command="{Binding SaveCommand}"/>
             <Button x:Name="BtnNewTable" Content="Create Table" Command="{Binding CreateTableCommand}"/>
             <Button x:Name="BtnDeleteTable" Content="DeleteTable" Click="BtnDeleteTable_OnClick"/>
+            <Button x:Name="BtnCreateDb" Content="Create database" Click="BtnCreateDb_OnClick"/>
+            <TextBox x:Name="DbName"/>
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

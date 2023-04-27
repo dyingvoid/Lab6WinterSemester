@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Windows;
 using Core.Reflection;
 using Core.TableClasses;
 using Lab6WinterSemester.Models;
@@ -53,5 +56,15 @@ public partial class MainWindow : Window
             if (database.Tables.Contains(((Table)Explorer.SelectedItem)))
                 database.Tables.Remove(((Table)Explorer.SelectedItem));
         }
+    }
+
+    private void BtnCreateDb_OnClick(object sender, RoutedEventArgs e)
+    {
+        var tableFactory = new TableFactory();
+        var factory = new DataBaseFactory(tableFactory);
+        var schema = new SchemaFile(new FileInfo(DbName.Text), 
+            new Dictionary<FileInfo, Dictionary<string, Type>>());
+        var database = factory.CreateInstance(schema);
+        ((MainWindowViewModel)DataContext).DataBases.Add(database);
     }
 }
