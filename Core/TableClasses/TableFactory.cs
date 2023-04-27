@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Core.Managers;
+﻿using Core.Managers;
 using Core.Reflection;
 
 namespace Core.TableClasses;
@@ -32,7 +31,7 @@ public class TableFactory
             preparedData.Add(builder.CreateInstance(elementArray.ToArray()));
         }
 
-        return new Table(tableFile, tableMetadata, preparedData, builder.BuildedType, properties);
+        return new Table(tableFile, preparedData, builder.BuildedType, properties);
     }
 
     private List<TableProperty> MakeProperties(Dictionary<string, Type> tableConfig)

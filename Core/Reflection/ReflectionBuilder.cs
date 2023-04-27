@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Reflection.Emit;
+using Core.TableClasses;
 
 namespace Core.Reflection;
 
@@ -25,13 +26,31 @@ public class ReflectionBuilder
         var counter = 0;
         foreach (var (propertyName, type) in TypeDescription)
         {
-            if (properties[counter].ToString().Length == 0 && type.FullName is not "System.String")
+            if (properties[counter].ToString().Length == 0 && 
+                type.FullName is not "System.String")
             {
                 properties[counter] = Activator.CreateInstance(type);
             }
             BuildedType.GetProperty(propertyName)
                 .SetValue(instance, Convert.ChangeType(properties[counter], type));
             counter++;
+        }
+
+        return instance;
+    }
+
+    public object CreateEmptyInstance()
+    {
+        var instance = Activator.CreateInstance(BuildedType);
+        
+        foreach (var (propertyName, type) in TypeDescription)
+        {
+            object? defaultValue = null;
+            
+            defaultValue = type.FullName == "System.String" ? "" : Activator.CreateInstance(type);
+            
+            BuildedType.GetProperty(propertyName)
+                .SetValue(instance, Convert.ChangeType(defaultValue, type));
         }
 
         return instance;
@@ -109,5 +128,17 @@ public class ReflectionBuilder
         }
 
         return objectProperties;
+    }
+
+    public static Dictionary<string, Type> GetDescription(Table table)
+    {
+        var description = new Dictionary<string, Type>();
+
+        foreach (var property in table.Properties)
+        {
+            description.TryAdd(property.Name, Type.GetType("System." + property.PrType));
+        }
+
+        return description;
     }
 }

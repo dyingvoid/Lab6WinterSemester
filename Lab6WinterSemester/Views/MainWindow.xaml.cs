@@ -1,9 +1,9 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
+using Core.Reflection;
 using Core.TableClasses;
 using Lab6WinterSemester.Models;
 using Lab6WinterSemester.ViewModels;
+using Table = Core.TableClasses.Table;
 
 namespace Lab6WinterSemester.Views;
 
@@ -15,8 +15,7 @@ public partial class MainWindow : Window
 
         MainModel mainModel = new MainModel();
         DataContext = new MainWindowViewModel(mainModel);
-        BtnNewTable.IsEnabled = false;
-        //UpdateDescription();
+        BtnDeleteTable.IsEnabled = false;
     }
     
     private void UpdateDataGrid(object sender, RoutedEventArgs e)
@@ -26,22 +25,33 @@ public partial class MainWindow : Window
         
         if (Explorer.SelectedItem is Table)
         {
-            Data.ItemsSource = ((Table)Explorer.SelectedItem).Data;
+            var table = ((Table)Explorer.SelectedItem);
+            if (table.Data.Count == 0)
+            {
+                var description = ReflectionBuilder.GetDescription(table);
+                var builder = new ReflectionBuilder("System." + table.ElementsType.Name, description);
+                table.Data.Add(builder.CreateEmptyInstance());
+            }
+
+            BtnDeleteTable.IsEnabled = true;
+            Data.ItemsSource = table.Data;
             Description.ItemsSource = ((Table)Explorer.SelectedItem).Properties;
-            BtnNewTable.IsEnabled = false;
+            
         }
         else
         {
             Data.ItemsSource = ((DataBase)Explorer.SelectedItem).Tables;
-            BtnNewTable.IsEnabled = true;
+            BtnDeleteTable.IsEnabled = false;
         }
     }
 
-    private void UpdateDescription()
+    private void BtnDeleteTable_OnClick(object sender, RoutedEventArgs e)
     {
-        var nameColumn = new DataGridTextColumn() { Header = "Name", Binding = new Binding("Name") };
-        var typeColumn = new DataGridTextColumn() { Header="Type", Binding = new Binding("PropertyType") };
-        Description.Columns.Add(nameColumn);
-        Description.Columns.Add(typeColumn);
+        var dataBases = ((MainWindowViewModel)DataContext).DataBases;
+        foreach (var database in dataBases)
+        {
+            if (database.Tables.Contains(((Table)Explorer.SelectedItem)))
+                database.Tables.Remove(((Table)Explorer.SelectedItem));
+        }
     }
 }

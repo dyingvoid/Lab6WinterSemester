@@ -2,7 +2,7 @@
 
 public class Table
 {
-    public Table(FileInfo file, Dictionary<string, Type> metadata, List<object> data, Type type, 
+    public Table(FileInfo file, List<object> data, Type type, 
         List<TableProperty> properties)
     {
         File = file;
